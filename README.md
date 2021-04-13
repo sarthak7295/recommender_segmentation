@@ -1,4 +1,4 @@
-# recommender_segmentation
+# A Recommender for Retail Business using Consumer Segmentation with Clustering Techniques
 
 GitHub Link: https://github.com/sarthak7295/recommender_segmentation.git
 
@@ -16,15 +16,16 @@ We propose a study wherein we would try to help online retail business by better
 - clone the git repo
 - how the structure of dash board should look like after extracting dataset
 - extract the datatset from dataset.zip file
-- ![recommender_structure](https://user-images.githubusercontent.com/25847051/114580979-548eed80-9c4d-11eb-8f1e-401ffe6e5c00.png)
+![recommender_structure](https://user-images.githubusercontent.com/25847051/114580979-548eed80-9c4d-11eb-8f1e-401ffe6e5c00.png)
 
 - To install dependencies run "pip install -r requirements.txt"
 - In the terminal type "python app.py" to run the flask applicaiton
-
+- The segmentation analysis can be run using jupyter notebook
 
 
 # Dashboard
 
 ![image](https://user-images.githubusercontent.com/25847051/114580865-3923e280-9c4d-11eb-9605-44605467dab8.png)
+
 
 
