@@ -28,4 +28,3 @@ We propose a study wherein we would try to help online retail business by better
 ![image](https://user-images.githubusercontent.com/25847051/114580865-3923e280-9c4d-11eb-9605-44605467dab8.png)
 
 
-
