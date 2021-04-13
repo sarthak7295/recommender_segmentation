@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title> Ecommerce reccommender</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="{{ url_for('static',filename='styles.css') }}">-->
+</head>
+<body>
+<div class="container">
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation" class="active"><a href="#">Home</a></li>
+
+            </ul>
+        </nav>
+        <h3 class="text-muted"> Recommender-Dashboard</h3>
+    </div>
+    <div class="jumbotron">
+        <h3 class="jumbotronHeading">Enter the details of customer</h3>
+        <input type="radio" id="new" name="typeCustomer" onchange="changeTheType();" value="new">
+        <label for="new">New</label> &nbsp;&nbsp;&nbsp;&nbsp;
+
+        <input type="radio" id="old" name="typeCustomer" onchange="changeTheType();" value="old">
+        <label for="old">Existing</label>
+
+        <!--<div class="slidecontainer">-->
+        <!--<p>Drag the slider to change the line width.</p>-->
+        <!--<input type="range" min="10" max="50" value="15" id="myRange">-->
+        <!--<p>Value: <span id="sliderValue"></span></p>-->
+        <br><br>
+
+        <p id="cust_old_div">
+            <label>Choose a customer :</label>
+            <select name="customerId" id="customerId" onchange="changeFunc();">
+
+            </select>
+        </p>
+        <p id="cust_new_div">
+            <label for="customerIdNew">Name:</label>
+            <input type="text" id="customerIdNew" name="customerIdNew">
+        </p>
+        <br><br>
+        <label for="myCheck">Enable editing values:</label>
+        <input type="checkbox" id="myCheck" onclick="enableEditing()">
+        <br><br>
+        <label for="recency">Recency:</label>
+        <input type="text" id="recency" name="recency">&nbsp;&nbsp;
+
+        <label for="frequency">Frequency:</label>
+        <input type="text" id="frequency" name="frequency">&nbsp;&nbsp;
+
+        <label for="monetary">Monetary:</label>
+        <input type="text" id="monetary" name="monetary">&nbsp;&nbsp;
+        <br>
+        <label>Segment</label>
+        <select name="segment" id="segment">
+
+        </select>
+        <br><br><br><br><br><br>
+        <a class="btn btn-success myButton" href="#" role="button">Recommend me Products</a>
+
+    </div>
+    {#
+    <form class="form-inline" method="POST" action="{{ url_for('result') }}">#}
+        {#
+        <div class="select"><select name="comp_select" class="selectpicker form-control"> {% for o in data %}#}
+            {#
+            <option value="{{ o.name }}">{{ o.name }}</option>
+            {% endfor %} </select></div>
+        #}
+        {#
+        <button type="submit" class="btn">Go</button>
+        #}
+        {#
+    </form>
+    #}
+    <!--<div class="canvasDiv">-->
+    <!--<canvas id="canvas" width="280" height="280"></canvas>-->
+    <!--<br>-->
+    <!--<p style="text-align:center;">-->
+    <!--{#                <div class="select"><select name="comp_select" class="selectpicker form-control">    {% for o in data %}#}-->
+    <!--{#                <option value="{{ o.name }}">{{ o.name }}</option>    {% endfor %}    </select></div>#}-->
+    <!--<a class="btn btn-success myButton" href="#" role="button">Predict</a>-->
+    <!--<a class="btn btn-primary" href="#" id="clearButton" role="button">Clear</a>-->
+    <!--</p>-->
+    <!--</div>-->
+</div>
+<div class="jumbotron">
+    <p id="result">Get your Recommendations here!!!</p>
+</div>
+<footer class="footer">
+    <p>&copy; 2018, python36.com</p>
+</footer>
+</div> <!-- /container -->
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<!--<script src="{{ url_for('static',filename='new_home.js') }}"></script>-->
+<script type="text/javascript">
+var arr = [];
+var segment_arr = [];
+
+var jsonData;
+
+
+class Customer {
+  constructor(name, recency,frequency,monetary,cluster,isNewCustomer) {
+    this.name = name;
+    this.recency = recency;
+    this.frequency = frequency;
+    this.monetary = monetary;
+    this.cluster = cluster;
+    this.isNewCustomer = isNewCustomer;
+  }}
+
+
+    $(".myButton").click(function () {
+        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        <!--var canvasObj = document.getElementById("canvas");-->
+
+
+        var  rec = document.getElementById("recency").value;
+        var  freq = document.getElementById("frequency").value;
+        var  mon = document.getElementById("monetary").value;
+        var  cluster = document.getElementById("segment").value;
+        var  custId
+        var isNewCustomer;
+        if (!rec) {
+               rec=2000;
+        }
+        if (!freq) {
+               freq=2000;
+        }
+        if (!mon) {
+               mon=2000;
+        }
+        if(document.getElementById('new').checked) {
+                custId = document.getElementById("customerIdNew").value;
+                isNewCustomer = true;
+        }
+        else if(document.getElementById('old').checked) {
+
+                custId = document.getElementById("customerId").value;
+                isNewCustomer = false;
+         }
+
+        myCustomer = new Customer(custId, rec,freq,mon,cluster,isNewCustomer);
+        <!--console.log(myCustomer)-->
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            <!--alert(xhr.responseText);-->
+            var obj = JSON.parse(xhr.responseText);
+            var value_str = "Top 5 product ID to recommend the user are : <br><ol>";
+
+            for (var key in obj) {
+                   if (obj.hasOwnProperty(key)) {
+                        <!--console.log(key + " -> " + obj[key]);-->
+                        value_str = value_str+"<li> Product Id :"+key+", "+obj[key]+"</li>"
+                    }
+            }
+            value_str = value_str + "</ol>"
+            console.log(typeof(xhr.responseText))
+            document.getElementById('result').innerHTML = value_str;
+            }
+        }
+        xhr.open("POST", $SCRIPT_ROOT + "/recommend/", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(myCustomer));
+
+
+    });
+
+function changeTheType() {
+  var x = document.getElementById("cust_new_div");
+  var y = document.getElementById("cust_old_div");
+
+
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+
+  }
+}
+
+function changeFunc() {
+  var selected_user = document.getElementById("customerId").value;
+
+  for (var i = 0; i < jsonData.length; i++) {
+    var counter = jsonData[i];
+    if(selected_user.localeCompare(counter.Client)==0){
+    document.getElementById("recency").value=counter.Rank_Recency;
+    document.getElementById("frequency").value=counter.Rank_Frequency;
+    document.getElementById("monetary").value=counter.Rank_Monetary;
+    document.getElementById("segment").value=counter.Cluster;
+    };
+}
+
+}
+
+function enableEditing() {
+
+document.getElementById("recency").disabled = !document.getElementById("recency").disabled;
+document.getElementById("frequency").disabled = !document.getElementById("frequency").disabled;
+document.getElementById("monetary").disabled = !document.getElementById("monetary").disabled;
+document.getElementById("segment").disabled = !document.getElementById("segment").disabled;
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+document.getElementById("recency").disabled = true;
+document.getElementById("frequency").disabled = true;
+document.getElementById("monetary").disabled = true;
+document.getElementById("segment").disabled = true;
+
+var users;
+var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", $SCRIPT_ROOT+'/get/users', false ); // false for synchronous request
+    xmlHttp.send( null );
+    var users = xmlHttp.responseText;
+    jsonData = JSON.parse(users);
+
+for (var i = 0; i < jsonData.length; i++) {
+    var counter = jsonData[i];
+    arr.push(counter.Client);
+    segment_arr.push(counter.Cluster);
+}
+
+
+
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+var uniqueSegment = segment_arr.filter(onlyUnique);
+
+
+
+
+var select = document.getElementById("customerId");
+
+var i;
+for ( i = 0; i < arr.length; i++) {
+  var opt = arr[i];
+  var el = document.createElement("option");
+  el.textContent = opt;
+  el.value = opt;
+  select.appendChild(el);
+}
+
+var select = document.getElementById("segment");
+for ( i = 0; i < uniqueSegment.length; i++) {
+  var opt = uniqueSegment[i];
+  var el = document.createElement("option");
+  el.textContent = opt;
+  el.value = opt;
+  select.appendChild(el);
+}
+<!---->
+<!---->
+<!---->
+
+
+
+    document.getElementById('old').checked = true;
+   var x = document.getElementById("cust_new_div");
+  var y = document.getElementById("cust_old_div");
+      x.style.display = "none";
+    y.style.display = "block";
+
+});
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
