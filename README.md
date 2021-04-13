@@ -7,16 +7,19 @@ Retail marketers are constantly looking for ways to improve the effectiveness of
 We propose a study wherein we would try to help online retail business by better understand its customers and therefore conducting customer-centric marketing more effectively. Based on Recency, Frequency, and Monetary model, customers of the business have been segmented into various meaningful groups using the different clustering algorithm. Furthermore, using this knowledge we would build a better recommender system personalized to different segment of customers.
 
 #Design architecture
+
 ![image](https://user-images.githubusercontent.com/25847051/114580716-18f42380-9c4d-11eb-8dbb-add2b987a4c1.png)
 
 
 #How to Run?
+
 - clone the git repo
 - ![recommender_structure](https://user-images.githubusercontent.com/25847051/114580979-548eed80-9c4d-11eb-8f1e-401ffe6e5c00.png)
 - extract the datatset from dataset.zip file
 - In the terminal type "python app.py"
 
 # Dashboard
+
 ![image](https://user-images.githubusercontent.com/25847051/114580865-3923e280-9c4d-11eb-9605-44605467dab8.png)
 
 
