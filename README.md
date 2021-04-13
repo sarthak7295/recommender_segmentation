@@ -14,9 +14,14 @@ We propose a study wherein we would try to help online retail business by better
 # How to Run?
 
 - clone the git repo
-- ![recommender_structure](https://user-images.githubusercontent.com/25847051/114580979-548eed80-9c4d-11eb-8f1e-401ffe6e5c00.png)
+- how the structure of dash board should look like after extracting dataset
 - extract the datatset from dataset.zip file
-- In the terminal type "python app.py"
+- ![recommender_structure](https://user-images.githubusercontent.com/25847051/114580979-548eed80-9c4d-11eb-8f1e-401ffe6e5c00.png)
+
+- To install dependencies run "pip install -r requirements.txt"
+- In the terminal type "python app.py" to run the flask applicaiton
+
+
 
 # Dashboard
 
